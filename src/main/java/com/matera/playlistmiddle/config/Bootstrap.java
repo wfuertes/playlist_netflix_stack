@@ -1,7 +1,7 @@
 /*
  * Copyright 2015, Charter Communications, All rights reserved.
  */
-package com.matera.nettec.config;
+package com.matera.playlistmiddle.config;
 
 import com.netflix.governator.guice.BootstrapBinder;
 import com.netflix.karyon.server.ServerBootstrap;
