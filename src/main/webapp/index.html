@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+<title>My First AngularJS App</title>
+<link rel="stylesheet" type="text/css" href="css/app.css">
+</head>
+<body>
+	<div id="all">
+		<div class="panel">
+			<div class="header">Hello AngularJS and Netflix APIs</div>
+			<table ng-controller="FinanceController">
+				<tr>
+					<td>Your Salary:</td>
+					<td><input type="text" ng-model="salary"></td>
+				</tr>
+				<tr>
+					<td>How much should you invest in gadgets:</td>
+					<td><input type="text" ng-model="percentage">&nbsp%</td>
+				</tr>
+				<tr>
+					<td>The amount to be spent in shopping will be:</td>
+					<td><span class="text-result">{{result}}</span></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="text-right">
+						<button ng-click="calculate()">Calculate</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<!-- my javascript dependency here -->
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/controllers.js"></script>
+</body>
+</html>
