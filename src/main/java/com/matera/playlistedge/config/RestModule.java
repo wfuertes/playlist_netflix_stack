@@ -1,9 +1,8 @@
 /*
  * Copyright 2015, Charter Communications, All rights reserved.
  */
-package com.matera.nettec.config;
+package com.matera.playlistedge.config;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
@@ -29,7 +28,7 @@ public class RestModule extends JerseyServletModule {
         initParams.put(PackagesResourceConfig.PROPERTY_PACKAGES, "com.matera");
 
         // hook Jackson into Jersey as the POJO <-> JSON mapper
-        bind(JacksonJsonProvider.class).in(Scopes.SINGLETON);
+        bind(JacksonJsonContextProvider.class).in(Scopes.SINGLETON);
 
         serve("/*").with(GuiceContainer.class, initParams);
     }
