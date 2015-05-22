@@ -1,22 +1,18 @@
 package com.matera.playlistedge.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import rx.functions.Func1;
+
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.google.inject.Inject;
 import com.matera.playlistcore.entities.PlayListResponseEdge;
 import com.matera.playlistcore.entities.PlayListResponseMiddle;
-import com.netflix.client.http.HttpRequest;
-import com.netflix.client.http.HttpResponse;
 import com.netflix.niws.client.http.RestClient;
-
-import java.util.function.Function;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -39,33 +35,39 @@ public class PlayListRS {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retreivePlayList() {
-
-        ObjectMapper mapper = jacksonJsonProvider.locateMapper(Object.class, MediaType.APPLICATION_JSON_TYPE);
-
-        HttpRequest request =
-            HttpRequest.newBuilder().uri("/playlistmiddle/playlist")
-                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).build();
-
-        try (HttpResponse response = restClient.executeWithLoadBalancer(request)) {
-
-            PlayListResponseMiddle playListResponseMiddle =
-                mapper.readValue(response.getInputStream(), PlayListResponseMiddle.class);
-
-            PlayListResponseEdge responseEdge = getPlayListFunction().apply(playListResponseMiddle);
-
-            return Response.ok(responseEdge).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError().build();
-        }
+    	RetreivePlaylistCommand command = new RetreivePlaylistCommand(restClient, jacksonJsonProvider);
+    	return command.toObservable()
+    			.map(toEdgePlayList())
+    			.map(toSuccessResponse())
+    			.onErrorReturn(handleError())
+    			.toBlocking().first();
     }
 
-    private Function<PlayListResponseMiddle, PlayListResponseEdge> getPlayListFunction() {
+	private Func1<Throwable, Response> handleError() {
+		return new Func1<Throwable, Response>() {
+			@Override
+			public Response call(Throwable ex) {
+				ex.printStackTrace();
+				return Response.serverError().build();
+			}
+		};
+	}
 
-        return new Function<PlayListResponseMiddle, PlayListResponseEdge>() {
+	private Func1<PlayListResponseEdge, Response> toSuccessResponse() {
+		return new Func1<PlayListResponseEdge, Response>() {
+			@Override
+			public Response call(PlayListResponseEdge playlist) {
+				return Response.ok(playlist).build();
+			}
+		};
+	}
+
+    private Func1<PlayListResponseMiddle, PlayListResponseEdge> toEdgePlayList() {
+
+        return new Func1<PlayListResponseMiddle, PlayListResponseEdge>() {
 
             @Override
-            public PlayListResponseEdge apply(PlayListResponseMiddle middle) {
+            public PlayListResponseEdge call(PlayListResponseMiddle middle) {
 
                 PlayListResponseEdge edge = new PlayListResponseEdge();
                 edge.setPlayLists(middle.getPlayLists());
