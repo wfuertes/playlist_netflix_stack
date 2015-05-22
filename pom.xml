@@ -80,6 +80,11 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+		    <groupId>com.netflix.hystrix</groupId>
+		    <artifactId>hystrix-core</artifactId>
+		    <version>1.3.18</version>
+		</dependency>
+		<dependency>
 			<groupId>com.matera</groupId>
 			<artifactId>playlist-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
