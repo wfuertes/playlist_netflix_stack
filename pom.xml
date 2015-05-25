@@ -86,7 +86,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.matera</groupId>
-			<artifactId>playlist-core</artifactId>
+			<artifactId>playlist-client</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

@@ -1,12 +1,8 @@
 package com.matera.playlistedge.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.matera.playlistcore.entities.PlayListResponseEdge;
-import com.matera.playlistcore.entities.PlayListResponseMiddle;
-import com.matera.playlistedge.config.RestModule;
-import com.netflix.niws.client.http.RestClient;
+import com.matera.playlistedge.service.PlayListService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,23 +20,19 @@ import rx.functions.Func1;
 @Path("playlist")
 public class PlayListRS {
 
-    private final RestClient restClient;
-    private final ObjectMapper mapper;
+    private final PlayListService service;
 
     @Inject
-    public PlayListRS(final RestClient restClient, @Named(RestModule.PLAYLIST_MAPPER) final ObjectMapper mapper) {
+    public PlayListRS(final PlayListService service) {
 
-        this.restClient = restClient;
-        this.mapper = mapper;
+        this.service = service;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlayList() {
 
-        RetreivePlaylistCommand command = new RetreivePlaylistCommand(restClient, mapper);
-        return command.toObservable().map(toEdgePlayList()).map(toSuccessResponse()).onErrorReturn(handleError())
-            .toBlocking().single();
+        return service.getPlayList().map(toSuccessResponse()).onErrorReturn(handleError()).toBlocking().single();
     }
 
     private Func1<Throwable, Response> handleError() {
@@ -64,20 +56,6 @@ public class PlayListRS {
             public Response call(PlayListResponseEdge playlist) {
 
                 return Response.ok(playlist).build();
-            }
-        };
-    }
-
-    private Func1<PlayListResponseMiddle, PlayListResponseEdge> toEdgePlayList() {
-
-        return new Func1<PlayListResponseMiddle, PlayListResponseEdge>() {
-
-            @Override
-            public PlayListResponseEdge call(PlayListResponseMiddle middle) {
-
-                PlayListResponseEdge edge = new PlayListResponseEdge();
-                edge.setPlayLists(middle.getPlayLists());
-                return edge;
             }
         };
     }
