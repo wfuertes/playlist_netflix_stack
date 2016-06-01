@@ -7,9 +7,18 @@
     <packaging>pom</packaging>
     <name>playlist</name>
     <url>http://maven.apache.org</url>
+    
+    <modules>
+        <module>playlist-core</module>
+        <module>playlist-client</module>
+        <module>playlist-middle</module>
+        <module>playlist-edge</module>
+    </modules>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -18,6 +27,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
     <build>
         <plugins>
             <plugin>
