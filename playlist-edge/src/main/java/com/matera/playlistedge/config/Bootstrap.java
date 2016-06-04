@@ -1,6 +1,7 @@
 package com.matera.playlistedge.config;
 
-import com.matera.playlist.config.PlayListClientModule;
+import com.matera.playlist.config.PlaylistClientModule;
+import com.matera.playlistcore.config.PlaylistJacksonModule;
 import com.netflix.governator.guice.BootstrapBinder;
 import com.netflix.karyon.server.ServerBootstrap;
 
@@ -11,9 +12,10 @@ import com.netflix.karyon.server.ServerBootstrap;
 public class Bootstrap extends ServerBootstrap {
 
     @Override
-    protected void configureBootstrapBinder(BootstrapBinder bootstrapBinder) {
+    protected void configureBootstrapBinder(BootstrapBinder binder) {
 
-        bootstrapBinder.install(new RestModule());
-        bootstrapBinder.install(new PlayListClientModule());
+        binder.install(new RestModule());
+        binder.install(new PlaylistClientModule());
+        binder.install(new PlaylistJacksonModule());
     }
 }

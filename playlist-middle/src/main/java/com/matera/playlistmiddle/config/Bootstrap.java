@@ -1,8 +1,6 @@
-/*
- * Copyright 2015, Charter Communications, All rights reserved.
- */
 package com.matera.playlistmiddle.config;
 
+import com.matera.playlistcore.config.PlaylistJacksonModule;
 import com.netflix.governator.guice.BootstrapBinder;
 import com.netflix.karyon.server.ServerBootstrap;
 
@@ -13,8 +11,9 @@ import com.netflix.karyon.server.ServerBootstrap;
 public class Bootstrap extends ServerBootstrap {
 
     @Override
-    protected void configureBootstrapBinder(BootstrapBinder bootstrapBinder) {
+    protected void configureBootstrapBinder(BootstrapBinder binder) {
 
-        bootstrapBinder.install(new RestModule());
+        binder.install(new RestModule());
+        binder.install(new PlaylistJacksonModule());
     }
 }

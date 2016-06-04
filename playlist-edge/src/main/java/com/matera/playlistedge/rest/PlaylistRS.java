@@ -2,7 +2,7 @@ package com.matera.playlistedge.rest;
 
 import com.google.inject.Inject;
 import com.matera.playlistcore.entities.PlayListResponseEdge;
-import com.matera.playlistedge.service.PlayListService;
+import com.matera.playlistedge.service.PlaylistService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -18,19 +18,19 @@ import rx.functions.Func1;
  * @author wbatista
  */
 @Path("playlist")
-public class PlayListRS {
+public class PlaylistRS {
 
-    private final PlayListService service;
+    private final PlaylistService service;
 
     @Inject
-    public PlayListRS(final PlayListService service) {
+    public PlaylistRS(final PlaylistService service) {
 
         this.service = service;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPlayList() {
+    public Response getPlaylist() {
 
         return service.getPlayList().map(toSuccessResponse()).onErrorReturn(handleError()).toBlocking().single();
     }

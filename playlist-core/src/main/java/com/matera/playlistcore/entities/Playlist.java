@@ -3,7 +3,7 @@ package com.matera.playlistcore.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayList {
+public class Playlist {
 
     private Long id;
     private String name;

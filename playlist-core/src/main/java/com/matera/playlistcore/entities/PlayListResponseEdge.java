@@ -10,15 +10,15 @@ import java.util.List;
  */
 public class PlayListResponseEdge {
 
-    private List<PlayList> playLists;
+    private List<Playlist> playLists;
 
     /**
      * @return the playLists
      */
-    public List<PlayList> getPlayLists() {
+    public List<Playlist> getPlayLists() {
 
         if (playLists == null) {
-            playLists = new ArrayList<PlayList>();
+            playLists = new ArrayList<Playlist>();
         }
         return playLists;
     }
@@ -26,7 +26,7 @@ public class PlayListResponseEdge {
     /**
      * @param playLists the playLists to set
      */
-    public void setPlayLists(List<PlayList> playLists) {
+    public void setPlayLists(List<Playlist> playLists) {
 
         this.playLists = playLists;
     }
