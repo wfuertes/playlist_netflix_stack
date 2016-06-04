@@ -21,7 +21,7 @@
         <karyon.version>1.0.27</karyon.version>
         <ribbon.version>0.3.12</ribbon.version>
         <hystrix.version>1.3.18</hystrix.version>
-        <playlist-parent.version>${version}</playlist-parent.version>
+        <playlist-parent.version>${project.version}</playlist-parent.version>
         <playlist-core.version>0.0.1-SNAPSHOT</playlist-core.version>
         <playlist-client.version>0.0.1-SNAPSHOT</playlist-client.version>
     </properties>

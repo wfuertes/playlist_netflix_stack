@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.matera</groupId>
     <artifactId>playlist-middle</artifactId>
-    <project.version>0.0.1-SNAPSHOT</project.version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>playlist-middle Maven Webapp</name>
@@ -15,6 +15,11 @@
         <artifactId>playlist</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+
+    <properties>
+        <tomcat.port>8090</tomcat.port>
+        <kayron.admin.port>9093</kayron.admin.port>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -52,7 +57,6 @@
     </dependencies>
 
     <build>
-        <finalName>playlist-middle</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -63,9 +67,10 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <configuration>
                     <path>/playlistmiddle</path>
-                    <port>8888</port>
+                    <port>${tomcat.port}</port>
                     <update>true</update>
                     <systemProperties>
+                        <archaius.deployment.environment>${environment}</archaius.deployment.environment>
                         <!-- Archaius config -->
                         <archaius.fixedDelayPollingScheduler.delayMills>15000</archaius.fixedDelayPollingScheduler.delayMills>
                         <archaius.fixedDelayPollingScheduler.initialDelayMills>7500</archaius.fixedDelayPollingScheduler.initialDelayMills>
@@ -75,7 +80,7 @@
                         <eureka.registration.enabled>true</eureka.registration.enabled>
                         <eureka.environment>local</eureka.environment>
                         <eureka.datacenter>ndc</eureka.datacenter>
-                        <http.port>8888</http.port>
+                        <http.port>${tomcat.port}</http.port>
                         <!-- other properties -->
                         <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
                         <com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump>true</com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump>
@@ -84,4 +89,16 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <environment>local</environment>
+            </properties>
+        </profile>
+    </profiles>
 </project>

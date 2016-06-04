@@ -43,6 +43,7 @@ public class RetrievePlaylistCommand extends HystrixCommand<PlaylistResponseMidd
 
             PlaylistResponseMiddle playListResponseMiddle =
                 mapper.readValue(response.getInputStream(), PlaylistResponseMiddle.class);
+
             return playListResponseMiddle;
         }
     }

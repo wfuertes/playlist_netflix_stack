@@ -15,6 +15,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <tomcat.port>8080</tomcat.port>
+        <kayron.admin.port>9092</kayron.admin.port>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.matera</groupId>
@@ -58,10 +63,11 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <configuration>
                     <path>/playlistedge</path>
-                    <port>8080</port>
+                    <port>${tomcat.port}</port>
                     <update>true</update>
                     <systemProperties>
                         <!-- Archaius config -->
+                        <archaius.deployment.environment>${environment}</archaius.deployment.environment>
                         <archaius.fixedDelayPollingScheduler.delayMills>15000</archaius.fixedDelayPollingScheduler.delayMills>
                         <archaius.fixedDelayPollingScheduler.initialDelayMills>7500</archaius.fixedDelayPollingScheduler.initialDelayMills>
                         <!-- <archaius.configurationSource.additionalUrls>file:///${basedir}/src/main/resources/netteclab-local.properties</archaius.configurationSource.additionalUrls> -->
@@ -70,7 +76,7 @@
                         <eureka.registration.enabled>true</eureka.registration.enabled>
                         <eureka.environment>local</eureka.environment>
                         <eureka.datacenter>ndc</eureka.datacenter>
-                        <http.port>8080</http.port>
+                        <http.port>${tomcat.port}</http.port>
                         <!-- other properties -->
                         <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
                         <com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump>true</com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump>
@@ -79,4 +85,17 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <environment>local</environment>
+            </properties>
+        </profile>
+    </profiles>
+
 </project>
