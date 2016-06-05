@@ -1,9 +1,5 @@
 package com.matera.playlistedge.rest;
 
-import com.google.inject.Inject;
-import com.matera.playlistcore.entities.PlayListResponseEdge;
-import com.matera.playlistedge.service.PlaylistService;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -11,6 +7,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import rx.functions.Func1;
+
+import com.google.inject.Inject;
+import com.matera.playlistcore.entities.PlaylistResponseEdge;
+import com.matera.playlistedge.service.PlaylistService;
 
 /**
  *
@@ -42,20 +42,19 @@ public class PlaylistRS {
             @Override
             public Response call(Throwable ex) {
 
-                ex.printStackTrace();
                 return Response.serverError().build();
             }
         };
     }
 
-    private Func1<PlayListResponseEdge, Response> toSuccessResponse() {
+    private Func1<PlaylistResponseEdge, Response> toSuccessResponse() {
 
-        return new Func1<PlayListResponseEdge, Response>() {
+        return new Func1<PlaylistResponseEdge, Response>() {
 
             @Override
-            public Response call(PlayListResponseEdge playlist) {
+            public Response call(PlaylistResponseEdge playlist) {
 
-                return Response.ok(playlist).build();
+                return Response.status(playlist.getStatus()).entity(playlist).build();
             }
         };
     }

@@ -1,12 +1,12 @@
 package com.matera.playlistedge.service;
 
-import com.google.inject.Inject;
-import com.matera.playlist.rest.PlaylistRestClient;
-import com.matera.playlistcore.entities.PlayListResponseEdge;
-import com.matera.playlistcore.entities.PlaylistResponseMiddle;
-
 import rx.Observable;
 import rx.functions.Func1;
+
+import com.google.inject.Inject;
+import com.matera.playlist.rest.PlaylistRestClient;
+import com.matera.playlistcore.entities.PlaylistResponseEdge;
+import com.matera.playlistcore.entities.PlaylistResponseMiddle;
 
 /**
  *
@@ -23,20 +23,22 @@ public class PlaylistService {
         this.playListClient = playListClient;
     }
 
-    public Observable<PlayListResponseEdge> getPlayList() {
+    public Observable<PlaylistResponseEdge> getPlayList() {
 
-        return playListClient.getPlayList().map(toEdgePlayList());
+        return playListClient.getPlayList().map(toEdgePlaylist());
     }
 
-    private Func1<PlaylistResponseMiddle, PlayListResponseEdge> toEdgePlayList() {
+    private Func1<PlaylistResponseMiddle, PlaylistResponseEdge> toEdgePlaylist() {
 
-        return new Func1<PlaylistResponseMiddle, PlayListResponseEdge>() {
+        return new Func1<PlaylistResponseMiddle, PlaylistResponseEdge>() {
 
             @Override
-            public PlayListResponseEdge call(PlaylistResponseMiddle middle) {
+            public PlaylistResponseEdge call(PlaylistResponseMiddle middle) {
 
-                PlayListResponseEdge edge = new PlayListResponseEdge();
-                edge.setPlayLists(middle.getPlaylists());
+                PlaylistResponseEdge edge = new PlaylistResponseEdge();
+                edge.setStatus(middle.getStatus());
+                edge.setMessage(middle.getMessage());
+                edge.getPlaylists().addAll(middle.getPlaylists());
                 return edge;
             }
         };

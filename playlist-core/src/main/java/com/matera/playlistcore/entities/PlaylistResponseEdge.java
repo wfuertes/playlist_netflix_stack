@@ -8,27 +8,18 @@ import java.util.List;
  *
  * @author user
  */
-public class PlayListResponseEdge {
+public class PlaylistResponseEdge extends BaseResponse {
 
     private List<Playlist> playLists;
 
     /**
      * @return the playLists
      */
-    public List<Playlist> getPlayLists() {
+    public List<Playlist> getPlaylists() {
 
         if (playLists == null) {
             playLists = new ArrayList<Playlist>();
         }
         return playLists;
     }
-
-    /**
-     * @param playLists the playLists to set
-     */
-    public void setPlayLists(List<Playlist> playLists) {
-
-        this.playLists = playLists;
-    }
-
 }

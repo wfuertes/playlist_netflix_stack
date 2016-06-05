@@ -6,9 +6,9 @@ import java.util.List;
 /**
  *
  *
- * @author user
+ * @author wbatista
  */
-public class PlaylistResponseMiddle {
+public class PlaylistResponseMiddle extends BaseResponse {
 
     private List<Playlist> playlists;
 

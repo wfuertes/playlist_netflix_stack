@@ -25,7 +25,8 @@ public class PlaylistClientModule extends AbstractModule {
     @Provides
     @Singleton
     public RestClient getRestClient() {
+        RestClient restClient = (RestClient) ClientFactory.getNamedClient(PLAYLIST_MIDDLE_RIBBON);
 
-        return (RestClient) ClientFactory.getNamedClient(PLAYLIST_MIDDLE_RIBBON);
+        return restClient;
     }
 }
