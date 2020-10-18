@@ -26,6 +26,10 @@ I am using the Eureka-Server in order to the services discovery and connection a
 
 ### Run locally
 
+Pre-requirements: 
+* Java 1.8;
+* Maven 3.x;
+
 1. Make sure you have docker installed. 
 2. We need to run Eureka-Server:
 
