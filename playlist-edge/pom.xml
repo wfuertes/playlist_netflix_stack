@@ -16,7 +16,7 @@
     </parent>
 
     <properties>
-        <tomcat.port>8080</tomcat.port>
+        <tomcat.port>8091</tomcat.port>
         <kayron.admin.port>9092</kayron.admin.port>
     </properties>
 
@@ -49,6 +49,10 @@
             <groupId>com.netflix.karyon</groupId>
             <artifactId>karyon-admin-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.netflix.servo</groupId>
+            <artifactId>servo-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -74,8 +78,8 @@
                         <!-- Eureka properties for local running -->
                         <eureka.enableSelfPreservation>false</eureka.enableSelfPreservation>
                         <eureka.registration.enabled>true</eureka.registration.enabled>
-                        <eureka.environment>local</eureka.environment>
-                        <eureka.datacenter>ndc</eureka.datacenter>
+                        <eureka.environment>test</eureka.environment>
+                        <eureka.datacenter>default</eureka.datacenter>
                         <http.port>${tomcat.port}</http.port>
                         <!-- other properties -->
                         <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>

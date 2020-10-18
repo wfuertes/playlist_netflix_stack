@@ -19,7 +19,7 @@ public class PlaylistRS {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retreivePlaylist() {
+    public Response retrievePlaylist() {
 
         Playlist p = new Playlist();
         p.setId(System.currentTimeMillis() + 1);
