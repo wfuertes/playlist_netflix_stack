@@ -41,6 +41,6 @@ public class PlaylistRS {
 
     private Func1<PlaylistResponseEdge, Response> toSuccessResponse() {
 
-        return playlist -> Response.status(playlist.getStatus()).entity(playlist).build();
+        return playlist -> Response.status(playlist.status()).entity(playlist).build();
     }
 }

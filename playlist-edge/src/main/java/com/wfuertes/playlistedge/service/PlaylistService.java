@@ -25,12 +25,8 @@ public class PlaylistService {
 
     private Func1<PlaylistResponseMiddle, PlaylistResponseEdge> toEdgePlaylist() {
 
-        return middle -> {
-            PlaylistResponseEdge edge = new PlaylistResponseEdge();
-            edge.setStatus(middle.getStatus());
-            edge.setMessage(middle.getMessage());
-            edge.getPlaylists().addAll(middle.getPlaylists());
-            return edge;
-        };
+        return middle -> new PlaylistResponseEdge(middle.status(),
+                                                  middle.message(),
+                                                  middle.playlists());
     }
 }

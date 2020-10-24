@@ -1,17 +1,26 @@
 package com.wfuertes.playlistcore.entities;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Value;
+import lombok.experimental.Accessors;
+
 import java.util.List;
 
-public class PlaylistResponseEdge extends BaseResponse {
+@Value
+@Accessors(fluent = true)
+public class PlaylistResponseEdge {
 
-    private List<Playlist> playLists;
+    int status;
+    String message;
+    List<Playlist> playlists;
 
-    public List<Playlist> getPlaylists() {
-
-        if (playLists == null) {
-            playLists = new ArrayList<>();
-        }
-        return playLists;
+    @JsonCreator
+    public PlaylistResponseEdge(@JsonProperty("status") int status,
+                                @JsonProperty("message") String message,
+                                @JsonProperty("playlists") List<Playlist> playlists) {
+        this.status = status;
+        this.message = message;
+        this.playlists = playlists;
     }
 }

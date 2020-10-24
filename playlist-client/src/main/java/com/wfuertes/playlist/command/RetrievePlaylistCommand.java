@@ -1,15 +1,17 @@
 package com.wfuertes.playlist.command;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-
-import com.wfuertes.playlistcore.entities.PlaylistResponseMiddle;
 import com.netflix.client.http.HttpRequest;
 import com.netflix.client.http.HttpResponse;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
 import com.netflix.niws.client.http.RestClient;
+import com.wfuertes.playlistcore.entities.PlaylistResponseMiddle;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+
+import static java.util.Collections.emptyList;
 
 public class RetrievePlaylistCommand extends HystrixCommand<PlaylistResponseMiddle> {
 
@@ -41,13 +43,9 @@ public class RetrievePlaylistCommand extends HystrixCommand<PlaylistResponseMidd
 
     @Override
     protected PlaylistResponseMiddle getFallback() {
-        PlaylistResponseMiddle responseMiddle = new PlaylistResponseMiddle();
-        responseMiddle.setStatus(500);
         if (isFailedExecution()) {
-            responseMiddle.setMessage(getFailedExecutionException().getMessage());
-        } else {
-            responseMiddle.setMessage("It wasn't possible retrieve playlist from: " + PLAYLIST_URL);
+            return new PlaylistResponseMiddle(500, getFailedExecutionException().getMessage(), emptyList());
         }
-        return responseMiddle;
+        return new PlaylistResponseMiddle(500, "It wasn't possible retrieve playlist from: " + PLAYLIST_URL, emptyList());
     }
 }

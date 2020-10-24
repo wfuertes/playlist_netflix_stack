@@ -1,44 +1,26 @@
 package com.wfuertes.playlistcore.entities;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Value;
+import lombok.experimental.Accessors;
+
 import java.util.List;
 
+@Value
+@Accessors(fluent = true)
 public class Playlist {
 
-    private Long id;
-    private String name;
-    private List<String> musics;
+    String id;
+    String name;
+    List<String> musics;
 
-    public Long getId() {
-
-        return id;
-    }
-
-    public void setId(Long id) {
-
+    @JsonCreator
+    public Playlist(@JsonProperty("id") String id,
+                    @JsonProperty("name") String name,
+                    @JsonProperty("musics") List<String> musics) {
         this.id = id;
-    }
-
-    public String getName() {
-
-        return name;
-    }
-
-    public void setName(String name) {
-
         this.name = name;
-    }
-
-    public List<String> getMusics() {
-
-        if (musics == null) {
-            musics = new ArrayList<>();
-        }
-        return musics;
-    }
-
-    public void setMusics(List<String> musics) {
-
         this.musics = musics;
     }
 }
