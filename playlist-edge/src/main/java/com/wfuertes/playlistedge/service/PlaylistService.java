@@ -18,9 +18,9 @@ public class PlaylistService {
         this.playListClient = playListClient;
     }
 
-    public Observable<PlaylistResponseEdge> getPlayList() {
+    public Observable<PlaylistResponseEdge> getPlayList(String playlistId) {
 
-        return playListClient.getPlayList().map(toEdgePlaylist());
+        return playListClient.getPlayList(playlistId).map(toEdgePlaylist());
     }
 
     private Func1<PlaylistResponseMiddle, PlaylistResponseEdge> toEdgePlaylist() {

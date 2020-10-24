@@ -1,8 +1,8 @@
 package com.wfuertes.playlistmiddle.config;
 
-import com.wfuertes.playlistcore.config.PlaylistJacksonModule;
 import com.netflix.governator.guice.BootstrapBinder;
 import com.netflix.karyon.server.ServerBootstrap;
+import com.wfuertes.playlistcore.config.PlaylistJacksonModule;
 
 public class Bootstrap extends ServerBootstrap {
 
@@ -11,5 +11,6 @@ public class Bootstrap extends ServerBootstrap {
 
         binder.install(new RestModule());
         binder.install(new PlaylistJacksonModule());
+        binder.install(new DatabaseModule());
     }
 }

@@ -2,6 +2,7 @@ package com.wfuertes.playlistedge.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,10 +25,11 @@ public class PlaylistRS {
     }
 
     @GET
+    @Path("/{playlistId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPlaylist() {
+    public Response getPlaylist(@PathParam("playlistId") String playlistId) {
 
-        return service.getPlayList()
+        return service.getPlayList(playlistId)
                       .map(toSuccessResponse())
                       .onErrorReturn(handleError())
                       .toBlocking()

@@ -17,9 +17,9 @@ public class PlaylistRestClient {
         this.restClient = restClient;
     }
 
-    public Observable<PlaylistResponseMiddle> getPlayList() {
+    public Observable<PlaylistResponseMiddle> getPlayList(String playlistId) {
 
-        RetrievePlaylistCommand command = new RetrievePlaylistCommand(restClient);
+        RetrievePlaylistCommand command = new RetrievePlaylistCommand(restClient, playlistId);
         return command.toObservable();
     }
 }

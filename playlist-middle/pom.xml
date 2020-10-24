@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.matera</groupId>
@@ -19,6 +19,11 @@
     <properties>
         <tomcat.port>8090</tomcat.port>
         <kayron.admin.port>9093</kayron.admin.port>
+        <db.url>jdbc:h2:file:${project.build.directory}/playlist_middle.db</db.url>
+        <db.driver>org.h2.Driver</db.driver>
+        <db.user>root</db.user>
+        <db.password>root</db.password>
+        <db.schema>playlist_middle</db.schema>
     </properties>
 
     <dependencies>
@@ -58,6 +63,22 @@
             <groupId>com.netflix.servo</groupId>
             <artifactId>servo-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -87,9 +108,83 @@
                         <http.port>${tomcat.port}</http.port>
                         <!-- other properties -->
                         <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
-                        <com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump>true</com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump>
+                        <com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump>true
+                        </com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump>
                     </systemProperties>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <!-- Note that we're executing the Flyway plugin in the "generate-sources" phase -->
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <url>${db.url};MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS ${db.schema}\;SET SCHEMA ${db.schema};</url>
+                    <user>${db.user}</user>
+                    <password>${db.password}</password>
+                    <table>schema_history</table>
+                    <locations>
+                        <location>filesystem:${project.basedir}/src/main/resources/db/migration</location>
+                    </locations>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.200</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <!-- The jOOQ code generation plugin is also executed in the generate-sources phase, prior to compilation -->
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jdbc>
+                        <driver>${db.driver}</driver>
+                        <url>${db.url}</url>
+                        <user>${db.user}</user>
+                        <password>${db.password}</password>
+                    </jdbc>
+                    <generator>
+                        <database>
+                            <includes>.*</includes>
+                            <inputSchema>${db.schema}</inputSchema>
+                            <includeExcludeColumns>true</includeExcludeColumns>
+                            <syntheticPrimaryKeys/>
+                            <excludes>schema_history</excludes>
+                        </database>
+                        <target>
+                            <packageName>com.wfuertes.playlistmiddle.sql</packageName>
+                            <directory>${project.build.directory}/generated-sources/jooq</directory>
+                        </target>
+                        <generate>
+                            <javaTimeTypes>true</javaTimeTypes>
+                        </generate>
+                    </generator>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.200</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

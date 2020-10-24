@@ -44,23 +44,32 @@ Pre-requirements:
 * Maven 3.x.
 
 1. Make sure you have docker installed. 
-2. We need to run Eureka-Server:
+2. We need to run Eureka-Server and MySQL:
 
 ```
 $ docker pull wfuertes/eureka-server:latest
 $ docker run -p 8080:8080 -d wfuertes/eureka-server
+
+$ docker pull mysql
+$ docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=playlist_middle -p 3306:3306 -d mysql:8.0.22
 ```
-After you run eureka-server wait for about 3 minutes it takes some time to get up. 
+After you run eureka-server wait for about 3 minutes it takes some time to get up.
 
 3. Run *playlist-middle* and *playlist-edge* using maven. Use two terminals one for each.
 
 3.1. 
 ```
+$ cd path_to/playlist_netflix_stack
+$ mvn clean install
+```
+
+3.2.
+```
 $ cd path_to/playlist-middle
 $ mvn clean tomcat7:run
 ```
 
-3.2. 
+3.3. 
 ```
 $ cd path_to/playlist-edge
 $ mvn clean tomcat7:run
@@ -72,7 +81,7 @@ After you run it, you need to wait about 1 minute for both start running and reg
 4. Finally, you can try some requests:
 
 ```
-curl --location --request GET 'http://localhost:8091/playlistedge/playlist'
+curl --location --request GET 'http://localhost:8091/playlistedge/playlist/b72b3ec0-1643-11eb-aa16-0242ac110003'
 ```
 
 **Sample of Response:**
@@ -82,30 +91,12 @@ curl --location --request GET 'http://localhost:8091/playlistedge/playlist'
     "message": "Playlists retrieved with success",
     "playlists": [
         {
-            "id": 1603047552688,
-            "name": "Classic Rock I",
+            "id": "b72b3ec0-1643-11eb-aa16-0242ac110003",
+            "name": "Class Rock",
             "musics": [
+                "About a Girl",
                 "Highway to Hell",
-                "Jump",
-                "Sultans Of Swing"
-            ]
-        },
-        {
-            "id": 1603047552688,
-            "name": "Classic Rock II",
-            "musics": [
-                "Highway to Hell",
-                "Jump",
-                "Sultans Of Swing"
-            ]
-        },
-        {
-            "id": 1603047552688,
-            "name": "Classic Rock II",
-            "musics": [
-                "Highway to Hell",
-                "Jump",
-                "Sultans Of Swing"
+                "Learn to Fly"
             ]
         }
     ]

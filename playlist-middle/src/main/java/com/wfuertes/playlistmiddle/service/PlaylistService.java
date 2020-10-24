@@ -1,27 +1,21 @@
 package com.wfuertes.playlistmiddle.service;
 
 import com.wfuertes.playlistcore.entities.Playlist;
+import com.wfuertes.playlistmiddle.repository.PlaylistRepository;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static java.util.Arrays.asList;
+import javax.inject.Inject;
 
 public class PlaylistService {
 
-    public List<Playlist> findAll() {
-        return fakePlaylist();
+    private final PlaylistRepository playlistRepository;
+
+    @Inject
+    public PlaylistService(PlaylistRepository playlistRepository) {
+        this.playlistRepository = playlistRepository;
     }
 
-    private static List<Playlist> fakePlaylist() {
-        return IntStream.range(0, 10)
-                        .mapToObj(i -> new Playlist(UUID.randomUUID().toString(),
-                                                    "Classic Rock " + i,
-                                                    asList("Highway to Hell",
-                                                           "Jump",
-                                                           "Sultans Of Swing")))
-                        .collect(Collectors.toList());
+    public Playlist findById(String playlistId) {
+        return playlistRepository.findById(playlistId)
+                                 .orElseThrow(() -> new IllegalArgumentException("No Playlist found for id: " + playlistId));
     }
 }
