@@ -1,12 +1,15 @@
 package com.wfuertes.playlistedge.service;
 
-import rx.Observable;
-import rx.functions.Func1;
-
 import com.google.inject.Inject;
 import com.wfuertes.playlist.rest.PlaylistRestClient;
+import com.wfuertes.playlistcore.entities.Page;
+import com.wfuertes.playlistcore.entities.PageQuery;
+import com.wfuertes.playlistcore.entities.Playlist;
 import com.wfuertes.playlistcore.entities.PlaylistResponseEdge;
-import com.wfuertes.playlistcore.entities.PlaylistResponseMiddle;
+import com.wfuertes.playlistcore.entities.PlaylistView;
+import rx.Observable;
+
+import java.util.List;
 
 public class PlaylistService {
 
@@ -14,19 +17,17 @@ public class PlaylistService {
 
     @Inject
     public PlaylistService(final PlaylistRestClient playListClient) {
-
         this.playListClient = playListClient;
     }
 
-    public Observable<PlaylistResponseEdge> getPlayList(String playlistId) {
-
-        return playListClient.getPlayList(playlistId).map(toEdgePlaylist());
+    public Observable<PlaylistResponseEdge<List<Playlist>>> getPlayList(String playlistId) {
+        return playListClient.getPlayList(playlistId)
+                             .map(middle -> new PlaylistResponseEdge<>(middle.status(), middle.message(), middle.content()));
     }
 
-    private Func1<PlaylistResponseMiddle, PlaylistResponseEdge> toEdgePlaylist() {
-
-        return middle -> new PlaylistResponseEdge(middle.status(),
-                                                  middle.message(),
-                                                  middle.playlists());
+    public Observable<PlaylistResponseEdge<Page<PlaylistView>>> getPlayListPage(PageQuery query) {
+        return playListClient.getPlayListPage(query)
+                             .map(middle -> new PlaylistResponseEdge<>(middle.status(), middle.message(), middle.content()));
     }
+
 }

@@ -11,6 +11,6 @@ public class Bootstrap extends ServerBootstrap {
 
         binder.install(new RestModule());
         binder.install(new PlaylistJacksonModule());
-        binder.install(new DatabaseModule());
+        binder.install(DatabaseModule.production());
     }
 }

@@ -5,22 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Value
 @Accessors(fluent = true)
-public class PlaylistResponseMiddle {
+public class PlaylistResponseMiddle<T> {
 
     int status;
     String message;
-    List<Playlist> playlists;
+    T content;
 
     @JsonCreator
     public PlaylistResponseMiddle(@JsonProperty("status") int status,
                                   @JsonProperty("message") String message,
-                                  @JsonProperty("playlists") List<Playlist> playlists) {
+                                  @JsonProperty("content") T content) {
         this.status = status;
         this.message = message;
-        this.playlists = playlists;
+        this.content = content;
     }
 }

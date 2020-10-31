@@ -1,19 +1,23 @@
 package com.wfuertes.playlist.command;
 
+import com.google.common.reflect.TypeToken;
 import com.netflix.client.http.HttpRequest;
 import com.netflix.client.http.HttpResponse;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
 import com.netflix.niws.client.http.RestClient;
+import com.wfuertes.playlistcore.entities.Playlist;
 import com.wfuertes.playlistcore.entities.PlaylistResponseMiddle;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
+import java.util.List;
+
 import static java.util.Collections.emptyList;
 
-public class RetrievePlaylistCommand extends HystrixCommand<PlaylistResponseMiddle> {
+public class RetrievePlaylistCommand extends HystrixCommand<PlaylistResponseMiddle<List<Playlist>>> {
 
     private static final String GROUP = "PlaylistMiddle";
     private static final String PLAYLIST_URL = "/playlistmiddle/playlist/";
@@ -32,23 +36,23 @@ public class RetrievePlaylistCommand extends HystrixCommand<PlaylistResponseMidd
     }
 
     @Override
-    protected PlaylistResponseMiddle run() throws Exception {
+    protected PlaylistResponseMiddle<List<Playlist>> run() throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
                                          .uri(PLAYLIST_URL + playlistId)
                                          .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON).build();
 
         try (HttpResponse response = restClient.executeWithLoadBalancer(request)) {
-
-            return response.getEntity(PlaylistResponseMiddle.class);
+            return response.getEntity(new TypeToken<PlaylistResponseMiddle<List<Playlist>>>() {
+            });
         }
     }
 
     @Override
-    protected PlaylistResponseMiddle getFallback() {
+    protected PlaylistResponseMiddle<List<Playlist>> getFallback() {
         if (isFailedExecution()) {
-            return new PlaylistResponseMiddle(500, getFailedExecutionException().getMessage(), emptyList());
+            return new PlaylistResponseMiddle<>(500, getFailedExecutionException().getMessage(), emptyList());
         }
-        return new PlaylistResponseMiddle(500, "It wasn't possible retrieve playlist from: " + PLAYLIST_URL, emptyList());
+        return new PlaylistResponseMiddle<>(500, "It wasn't possible retrieve playlist from: " + PLAYLIST_URL, emptyList());
     }
 }

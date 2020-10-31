@@ -81,22 +81,140 @@ After you run it, you need to wait about 1 minute for both start running and reg
 4. Finally, you can try some requests:
 
 ```
-curl --location --request GET 'http://localhost:8091/playlistedge/playlist/b72b3ec0-1643-11eb-aa16-0242ac110003'
+curl --location --request GET 'http://localhost:8091/playlistedge/playlist?page=1&limit=2'
+
+Response:
+{
+    "status": 200,
+    "message": "Playlist Names retrieved with success",
+    "content": [
+        {
+            "number": 1,
+            "records": 2,
+            "content": [
+                {
+                    "id": "b72b3ec0-1643-11eb-aa16-0242ac110003",
+                    "name": "Class Rock"
+                },
+                {
+                    "id": "d6ea9415-1643-11eb-aa16-0242ac110003",
+                    "name": "Jazz of Baby"
+                }
+            ]
+        }
+    ]
+}
+
 ```
 
-**Sample of Response:**
 ```
+curl --location --request GET 'http://localhost:8091/playlistedge/playlist/b72b3ec0-1643-11eb-aa16-0242ac110003'
+
+Response:
 {
     "status": 200,
     "message": "Playlists retrieved with success",
-    "playlists": [
+    "content": [
         {
             "id": "b72b3ec0-1643-11eb-aa16-0242ac110003",
             "name": "Class Rock",
-            "musics": [
-                "About a Girl",
-                "Highway to Hell",
-                "Learn to Fly"
+            "songs": [
+                {
+                    "id": "a72b3ec0-1643-11eb-aa16-0242ac18947",
+                    "name": "Learn to Fly",
+                    "artist": "Foo Fighters",
+                    "duration": 235,
+                    "createdAt": {
+                        "date": {
+                            "year": 2020,
+                            "month": 10,
+                            "day": 31
+                        },
+                        "time": {
+                            "hour": 12,
+                            "minute": 13,
+                            "second": 50,
+                            "nano": 0
+                        }
+                    },
+                    "updatedAt": {
+                        "date": {
+                            "year": 2020,
+                            "month": 10,
+                            "day": 31
+                        },
+                        "time": {
+                            "hour": 12,
+                            "minute": 13,
+                            "second": 50,
+                            "nano": 0
+                        }
+                    }
+                },
+                {
+                    "id": "c72b3ec0-1643-11eb-aa16-0242ac29837",
+                    "name": "Highway to Hell",
+                    "artist": "AC/DC",
+                    "duration": 217,
+                    "createdAt": {
+                        "date": {
+                            "year": 2020,
+                            "month": 10,
+                            "day": 31
+                        },
+                        "time": {
+                            "hour": 12,
+                            "minute": 13,
+                            "second": 50,
+                            "nano": 0
+                        }
+                    },
+                    "updatedAt": {
+                        "date": {
+                            "year": 2020,
+                            "month": 10,
+                            "day": 31
+                        },
+                        "time": {
+                            "hour": 12,
+                            "minute": 13,
+                            "second": 50,
+                            "nano": 0
+                        }
+                    }
+                },
+                {
+                    "id": "d72b3ec0-1643-11eb-aa16-0242ac19236",
+                    "name": "About a Girl",
+                    "artist": "Nirvana",
+                    "duration": 168,
+                    "createdAt": {
+                        "date": {
+                            "year": 2020,
+                            "month": 10,
+                            "day": 31
+                        },
+                        "time": {
+                            "hour": 12,
+                            "minute": 13,
+                            "second": 50,
+                            "nano": 0
+                        }
+                    },
+                    "updatedAt": {
+                        "date": {
+                            "year": 2020,
+                            "month": 10,
+                            "day": 31
+                        },
+                        "time": {
+                            "hour": 12,
+                            "minute": 13,
+                            "second": 50,
+                            "nano": 0
+                        }
+                    }
+                }
             ]
         }
     ]
