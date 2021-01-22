@@ -1,4 +1,4 @@
-# playlist
+# playlist [![wfuertes](https://circleci.com/gh/wfuertes/playlist_netflix_stack.svg?style=shield)](https://github.com/wfuertes/playlist_netflix_stack)
 
 This is a small example of using Netflix OSS Stack for microservices. 
 Here we have **playlist-edge** as our client or API that calls **playlist-middle** 
